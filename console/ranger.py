@@ -18,23 +18,44 @@ def get_category(extension):
             return category
     return "autres"
 
+def generer_nom_unique(dossier, nom_fichier):
+    base = Path(nom_fichier).stem
+    ext = Path(nom_fichier).suffix
+    compteur = 1
+    nouveau_nom = nom_fichier
+
+    while os.path.exists(os.path.join(dossier, nouveau_nom)):
+        nouveau_nom = f"{base}_{compteur}{ext}"
+        compteur += 1
+
+    return nouveau_nom
+
 def organiser_fichiers(repertoire):
     for item in os.listdir(repertoire):
         chemin_complet = os.path.join(repertoire, item)
 
-        if os.path.isfile(chemin_complet):
-            extension = Path(item).suffix.lstrip(".").lower()
-            categorie = get_category(extension)
+        # Ignore les dossiers
+        if not os.path.isfile(chemin_complet):
+            continue
 
-            # Dossier cible : catégorie/sous-extension
-            dossier_cible = os.path.join(repertoire, categorie, extension)
+        # Ignore les fichiers déjà déplacés dans un sous-dossier
+        if os.path.dirname(chemin_complet) != os.path.abspath(repertoire):
+            continue
 
-            # Création du dossier si nécessaire
-            os.makedirs(dossier_cible, exist_ok=True)
+        # Récupère l'extension ou "sans_extension"
+        extension = Path(item).suffix.lstrip(".").lower() or "sans_extension"
+        categorie = get_category(extension)
 
-            # Déplacement du fichier
-            shutil.move(chemin_complet, os.path.join(dossier_cible, item))
-            print(f"{item} → {categorie}/{extension}")
+        # Dossier cible : catégorie/sous-extension
+        dossier_cible = os.path.join(repertoire, categorie, extension)
+        os.makedirs(dossier_cible, exist_ok=True)
+
+        # Gère les doublons
+        nom_final = generer_nom_unique(dossier_cible, item)
+
+        # Déplace le fichier
+        shutil.move(chemin_complet, os.path.join(dossier_cible, nom_final))
+        print(f"{item} → {categorie}/{extension} (→ {nom_final})")
 
 if __name__ == "__main__":
     dossier_source = input("Entrez le chemin du dossier à organiser : ").strip()
