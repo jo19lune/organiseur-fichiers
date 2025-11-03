@@ -24,8 +24,23 @@ def lancer_organisation():
     log_zone.delete(1.0, tk.END)
     try:
         stats = organiser_fichiers(dossier, log_callback=afficher_message)
-        total = sum(stats.values())
-        messagebox.showinfo("Organisation terminée", f"{total} fichiers déplacés.")
+        actions = stats["actions"]
+        categories = stats["catégories"]
+
+        total = sum(actions.values())
+        lignes = [
+            f"Fichiers traités : {total}",
+            f"- Déplacés : {actions['déplacés']}",
+            f"- Renommés : {actions['renommés']}",
+            f"- Remplacés : {actions['remplacés']}",
+            f"- Ignorés : {actions['ignorés']}",
+            "",
+            "Répartition par catégorie :"
+        ]
+        for cat, count in categories.items():
+            lignes.append(f"- {cat} : {count}")
+
+        messagebox.showinfo("Organisation terminée", "\n".join(lignes))
     except Exception as e:
         messagebox.showerror("Erreur", str(e))
 
