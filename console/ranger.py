@@ -1,6 +1,11 @@
 import os
 import shutil
 from pathlib import Path
+from rich.console import Console
+from rich.table import Table
+from rich.panel import Panel
+
+console = Console()
 
 # Dictionnaire des extensions par catégorie
 EXTENSIONS = {
@@ -31,6 +36,9 @@ def generer_nom_unique(dossier, nom_fichier):
     return nouveau_nom
 
 def organiser_fichiers(repertoire):
+    stats = {}
+    console.print(Panel.fit(f"[bold cyan]Organisation du dossier :[/] {repertoire}", border_style="cyan"))
+
     for item in os.listdir(repertoire):
         chemin_complet = os.path.join(repertoire, item)
 
@@ -55,12 +63,29 @@ def organiser_fichiers(repertoire):
 
         # Déplace le fichier
         shutil.move(chemin_complet, os.path.join(dossier_cible, nom_final))
-        print(f"{item} → {categorie}/{extension} (→ {nom_final})")
+
+        stats.setdefault(categorie, 0)
+        stats[categorie] += 1
+
+        console.print(f"[green] {item} → [bold]{categorie}/{extension} [blue](→ {nom_final})")
+
+    # Affichage du résumé
+    table = Table(title="[yellow]Résumé du tri", show_lines=True)
+    table.add_column("Catégorie", style="bold magenta")
+    table.add_column("Fichiers déplacés", justify="right", style="bold yellow")
+
+    for cat, count in stats.items():
+        table.add_row(cat, str(count))
+
+    console.print(table)
 
 if __name__ == "__main__":
-    dossier_source = input("Entrez le chemin du dossier à organiser : ").strip()
-    if os.path.isdir(dossier_source):
-        organiser_fichiers(dossier_source)
-        print("Organisation terminée.")
-    else:
-        print("Dossier invalide.")
+    try:
+        dossier_source = input("Entrez le chemin du dossier à organiser : ").strip()
+        if os.path.isdir(dossier_source):
+            organiser_fichiers(dossier_source)
+            console.print("[bold green]Organisation terminée.[/]")
+        else:
+            console.print("[bold red]Dossier invalide.[/]")
+    except Exception as e:
+        console.print(f"[bold red]Erreur :[/] {e}")
