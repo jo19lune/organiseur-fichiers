@@ -1,4 +1,14 @@
 import tkinter as tk
+import sys
+import os
+
+def _resource_(chemin):
+    try:
+        chemin_base = sys._MEIPASS
+    except Exception:
+        chemin_base = os.path.abspath(".")
+    
+    return os.path.join(chemin_base, chemin)
 
 def demander_action_doublon(nom_fichier, dossier_cible):
     """Affiche une boîte de dialogue moderne pour décider quoi faire avec un doublon."""
@@ -9,7 +19,9 @@ def demander_action_doublon(nom_fichier, dossier_cible):
     fenetre_doublon.grab_set()
 
     try:
-        fenetre_doublon.iconbitmap("interface/assets/alert.ico")
+        chemin_icon = _resource_("interface/assets/alert.png")
+        icon = tk.PhotoImage(file=chemin_icon)
+        fenetre_doublon.iconphoto(False, icon)
     except Exception:
         pass
 

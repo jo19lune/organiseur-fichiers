@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, scrolledtext
 from core.ranger import organiser_fichiers
+from core.doublons import _resource_
 import os
 
 def choisir_dossier():
@@ -46,13 +47,16 @@ def lancer_organisation():
 
 # Fenêtre principale
 fenetre = tk.Tk()
+
 fenetre.title("Organiseur de fichiers")
 fenetre.geometry("800x600")
 fenetre.minsize(600, 400)
 
 # Icône personnalisée
 try:
-    fenetre.iconbitmap("interface/assets/logo.ico")
+    chemin_icon = _resource_("interface/assets/logo.png")
+    icon = tk.PhotoImage(file=chemin_icon)
+    fenetre.iconphoto(False, icon)
 except Exception:
     pass
 
