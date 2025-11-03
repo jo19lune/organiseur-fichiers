@@ -32,33 +32,39 @@ def lancer_organisation():
 # Fenêtre principale
 fenetre = tk.Tk()
 fenetre.title("Organiseur de fichiers")
-fenetre.geometry("700x500")
+fenetre.geometry("800x600")
+fenetre.minsize(600, 400)
 
 # Icône personnalisée
 try:
-    fenetre.iconbitmap("assets/logo.ico")
+    fenetre.iconbitmap("interface/assets/logo.ico")
 except Exception:
-    pass  # Ignore si l'icône n'est pas compatible ou absente
+    pass
 
-# Sélection du dossier
+# Configuration du grid principal
+fenetre.columnconfigure(0, weight=1)
+fenetre.rowconfigure(2, weight=1)
+
+# Cadre de sélection
 cadre_choix = tk.Frame(fenetre)
-cadre_choix.pack(pady=10)
+cadre_choix.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
+cadre_choix.columnconfigure(1, weight=1)
 
 label_dossier = tk.Label(cadre_choix, text="Dossier à organiser :")
-label_dossier.pack(side=tk.LEFT)
+label_dossier.grid(row=0, column=0, sticky="w")
 
-entree_dossier = tk.Entry(cadre_choix, width=60)
-entree_dossier.pack(side=tk.LEFT, padx=5)
+entree_dossier = tk.Entry(cadre_choix)
+entree_dossier.grid(row=0, column=1, padx=5, sticky="ew")
 
 btn_parcourir = tk.Button(cadre_choix, text="Parcourir", command=choisir_dossier)
-btn_parcourir.pack(side=tk.LEFT)
+btn_parcourir.grid(row=0, column=2)
 
 # Bouton d'action
 btn_lancer = tk.Button(fenetre, text="Lancer l'organisation", command=lancer_organisation, bg="#4CAF50", fg="white")
-btn_lancer.pack(pady=10)
+btn_lancer.grid(row=1, column=0, pady=10)
 
 # Zone de log
-log_zone = scrolledtext.ScrolledText(fenetre, width=85, height=20)
-log_zone.pack(padx=10, pady=10)
+log_zone = scrolledtext.ScrolledText(fenetre)
+log_zone.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
 
 fenetre.mainloop()
