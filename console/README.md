@@ -2,7 +2,7 @@
 
 ---
 
-Ce script Python permet de trier automatiquement les fichiers d’un dossier en les classant par type (images, vidéos, documents, audios, etc.) et par sous-type (ex. `pdf`, `mp4`, `png`, etc.). Il gère les fichiers sans extension, les doublons et ignore les dossiers déjà présents.
+Ce script Python permet de trier automatiquement les fichiers d’un dossier en les classant par **type** (images, vidéos, documents, audios, etc.) et par **sous-type** (ex. `pdf`, `mp4`, `png`, etc.). Il gère les fichiers sans extension, les doublons, ignore les dossiers déjà présents, et affiche un résumé coloré grâce à la bibliothèque [Rich](https://github.com/Textualize/rich).
 
 ---
 
@@ -14,6 +14,8 @@ Ce script Python permet de trier automatiquement les fichiers d’un dossier en 
 - 🧩 Gestion des fichiers sans extension (`autres/sans_extension`)
 - 🧠 Renommage automatique en cas de doublon (`fichier_1.txt`, `fichier_2.txt`, ...)
 - 🧱 Ignoration des dossiers et des fichiers déjà triés
+- 🎨 Affichage stylisé en console avec [Rich](https://github.com/Textualize/rich)
+- 📊 Tableau récapitulatif du tri effectué
 
 ---
 
@@ -34,7 +36,13 @@ Ce script Python permet de trier automatiquement les fichiers d’un dossier en 
 ## 🛠️ Installation
 
 1. Assurez-vous d’avoir Python 3 installé.
-2. Clonez ou téléchargez le dépôt :
+2. Installez la bibliothèque Rich :
+
+    ```bash
+        pip install rich
+    ```
+
+3. Clonez ou téléchargez le dépôt :
 
 ```bash
 git clone https://github.com/jo19lune/organiseur-fichiers.git
@@ -51,7 +59,7 @@ python ranger.py
 
 Puis saisissez le chemin du dossier à organiser lorsqu’il est demandé :
 
-``` .
+```text
 📁 Entrez le chemin du dossier à organiser : C:\Users\Loïck\Documents\À_trier
 ```
 
@@ -59,7 +67,7 @@ Puis saisissez le chemin du dossier à organiser lorsqu’il est demandé :
 
 ## 📁 Exemple de structure générée
 
-``` .
+```text
 À_trier/
 ├── images/
 │   └── png/
@@ -81,7 +89,11 @@ Puis saisissez le chemin du dossier à organiser lorsqu’il est demandé :
 
 ## 🧩 Personnalisation
 
-Vous pouvez modifier le dictionnaire `EXTENSIONS` dans le script pour ajouter ou retirer des types selon vos besoins.
+Vous pouvez modifier le dictionnaire `EXTENSIONS` dans le script pour :
+
+- Ajouter ou retirer des types de fichiers
+- Créer vos propres catégories métier
+- Intégrer des filtres ou des exclusions spécifiques
 
 ---
 
