@@ -1,0 +1,42 @@
+<MainScreen>:
+    name: "main"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(10)
+        padding: dp(10)
+
+        MDLabel:
+            text: "Organiseur de fichiers"
+            halign: "center"
+            font_style: "H5"
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        MDRaisedButton:
+            text: "📁 Choisir un dossier"
+            pos_hint: {"center_x": 0.5}
+            on_release: app.ouvrir_filemanager()
+
+        MDRaisedButton:
+            text: "🧹 Lancer l'organisation"
+            pos_hint: {"center_x": 0.5}
+            on_release: app.lancer_organisation()
+
+        MDRaisedButton:
+            text: "🗑️ Effacer les rapports"
+            pos_hint: {"center_x": 0.5}
+            on_release: app.effacer_logs()
+
+        MDCard:
+            orientation: "vertical"
+            padding: dp(10)
+            size_hint_y: 0.6
+
+            MDScrollView:
+                MDLabel:
+                    text: app.logs
+                    text_size: self.width, None
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    theme_text_color: "Primary"
